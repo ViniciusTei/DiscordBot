@@ -20,21 +20,21 @@ client.on('message', message => {
 
 	if(message.content.startsWith(`${config.prefix}listas`)){
         message.channel.send(mostrarListas())
-    } else if(message.content.startsWith(`${config.prefix}create`)) {
+    } else if(message.content.startsWith(`${config.prefix}criar`)) {
         tratarMensagemNovaLista(message.content)
         message.channel.send('Lista criada com sucesso!')
-    } else if(message.content.startsWith(`${config.prefix}delete`)) {
+    } else if(message.content.startsWith(`${config.prefix}deletar`)) {
         var args = message.content.slice(config.prefix.length).trim().split(' ');
         deletarLista(args[1])
         message.channel.send('Deletado com sucesso!')
-    } else if (message.content.startsWith(`${config.prefix}detail`)) {
+    } else if (message.content.startsWith(`${config.prefix}detalhar`)) {
         var args = message.content.slice(config.prefix.length).trim().split(' ');
         message.channel.send(mostrarDetalhes(parseInt(args[1])))
-    } else if (message.content.startsWith(`${config.prefix}join`)) {
+    } else if (message.content.startsWith(`${config.prefix}entrar`)) {
         var args = message.content.slice(config.prefix.length).trim().split(' ');
         adicionarJogador(parseInt(args[1]), message.author.username)
         message.channel.send('Jogador adicionado!')
-    } else if (message.content.startsWith(`${config.prefix}exit`)) {
+    } else if (message.content.startsWith(`${config.prefix}deixar`)) {
         var args = message.content.slice(config.prefix.length).trim().split(' ');
         removerJogador(parseInt(args[1]), message.author.username)
         message.channel.send('Jogador removido!')
