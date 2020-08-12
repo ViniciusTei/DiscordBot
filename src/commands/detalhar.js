@@ -21,7 +21,6 @@ module.exports.help = {
 }
 
 function mostrarDetalhes(lista) {
-    console.log(lista)
     let message = `#${lista.id} - ${lista.jogo} - ${convertTimestamp(lista.hora._seconds)} - ${lista.jogadores.length}/12\n`
     if(lista.jogadores.length > 0) {
         lista.jogadores.forEach(nomeJogador => {

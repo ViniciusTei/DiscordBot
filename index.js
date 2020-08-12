@@ -98,19 +98,6 @@ function deletarLista(args) {
     }
 }
 
-function mostrarDetalhes(args) {
-    let lista =  listas.filter(x => x.id == args)[0]
-    let message = `#${lista.id} - ${lista.jogo} - ${lista.hora} - ${lista.listaJogadores.length}/12\n`
-    if(lista.listaJogadores.length > 0) {
-        lista.listaJogadores.forEach(nomeJogador => {
-            message += `-> ${nomeJogador}\n`
-        })
-    } else {
-        message += `nao tem jogadores`
-    }
-    return message
-}
-
 function adicionarJogador(lista_id, nome_jogador) {
     listas.filter(x => x.id == lista_id)[0].adicionarJogador(nome_jogador)
 }
