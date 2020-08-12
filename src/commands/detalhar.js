@@ -1,33 +1,36 @@
-const Discord = require('discord.js');
 const admin = require('firebase-admin');
 
 const db = admin.firestore();
 
-//comando responsavel por mostrar de forma simplificada todas as listas criadas
-//quando exitir listas ela sera mostrada na forma #`numero_da_lista` - `nome_do_jogo` - `hora_do_jogo`- `quantidade_de_jogadores`
 module.exports.run = async (client, message, args) => {
-    const response = await db.collection('listas').get();
-   
-    return message.channel.send(mostrarListas(response))
+    let response = null;
+    if(args.length == 1) {
+        if(!isNaN(args[0])) {
+            response = await db.collection('listas').where('id', '==', args[0]).get();
+        }
+    }
+   response.forEach(doc => {
+       let d = doc.data()
+
+       return message.channel.send(mostrarDetalhes(d))
+   })
 }
 
 module.exports.help = {
-    name: 'listas'
+    name: 'detalhar'
 }
 
-function mostrarListas(listas) {
-    let message = '';
-
-    listas.forEach((doc) => {
-        let d = doc.data();
-        message += `#${d.id} - ${d.jogo} - ${convertTimestamp(d.hora._seconds)} - ${d.jogadores.length}/12\n`
-    })
-
-    if(message.length == 0) {
-        message = 'Nenhuma lista foi cadastrada ainda!'
+function mostrarDetalhes(lista) {
+    console.log(lista)
+    let message = `#${lista.id} - ${lista.jogo} - ${convertTimestamp(lista.hora._seconds)} - ${lista.jogadores.length}/12\n`
+    if(lista.jogadores.length > 0) {
+        lista.jogadores.forEach(nomeJogador => {
+            message += `-> ${nomeJogador}\n`
+        })
+    } else {
+        message += `nao tem jogadores`
     }
-
-    return message;
+    return message
 }
 
 function convertTimestamp(timestamp) {
