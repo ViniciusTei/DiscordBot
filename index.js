@@ -1,18 +1,22 @@
 const Discord = require('discord.js');
 const fs = require("fs");
+const admin = require('firebase-admin');
 
 const Lista = require('./src/lista.js');
 const config = require('./config.json');
 
 const client = new Discord.Client();
 
-let listas = new Array();
+var serviceAccount = require("./discordbot-dffbc-firebase-adminsdk-ay2f4-6cd39b97cc.json");
 
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: 'https://discordbot-dffbc.firebaseio.com'
+  });
 //bot ready
-client.once('ready', () => {
+client.once('ready', async () => {
     console.log('Ready!');
-    let lista = new Lista(0, '19:00', 'CS:GO')
-    listas.push(lista)
+    
 });
 
 //load commands
@@ -84,18 +88,7 @@ function criarLista(hora, jogo) {
     listas.push(nova_lista)
 }
 
-function mostrarListas() {
-    let message = '';
-    if(listas.length > 0) {
-        listas.forEach((el) => {
-            message += `#${el.id} - ${el.jogo} - ${el.hora} - ${el.listaJogadores.length}/12\n`
-        })
-    } else {
-        message = 'Nao tem listas cadastradas ainda.'
-    }
 
-    return message;
-}
 
 function deletarLista(args) {
     if(args == 'all') {
