@@ -7,7 +7,7 @@ const config = require('./config.json');
 
 const client = new Discord.Client();
 
-var serviceAccount = require("./discordbot-dffbc-firebase-adminsdk-ay2f4-6cd39b97cc.json") || process.env.FIREBASE;
+var serviceAccount = process.env.FIREBASE || require("./discordbot-dffbc-firebase-adminsdk-ay2f4-6cd39b97cc.json");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
