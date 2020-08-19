@@ -7,7 +7,7 @@ const config = require('./config.json');
 
 const client = new Discord.Client();
 
-var serviceAccount = require("./discordbot-dffbc-firebase-adminsdk-ay2f4-6cd39b97cc.json");
+var serviceAccount = require("./discordbot-dffbc-firebase-adminsdk-ay2f4-6cd39b97cc.json") || process.env.FIREBASE;
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -71,7 +71,7 @@ client.on('message', message => {
     // }
 });
 
-client.login(config.token);
+client.login(process.env.BOT_TOKEN || config.token);
 
 function tratarMensagemNovaLista(message) {
     let args = message.split(' ');
