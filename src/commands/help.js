@@ -1,6 +1,6 @@
 module.exports.run = async (client, message, args) => {
     let response = {
-        titulo: "********** Lista de comandos **********",
+        titulo: "*** Lista de comandos ***",
         comandos: [
             {
                 nome: "mix",
@@ -8,9 +8,9 @@ module.exports.run = async (client, message, args) => {
                 exemplo: "!mix nome1 nome2 nome3 nome4 nome5 nome6 nome7 nome8 nome9 nome10"
             },
             {
-                nome: "abrirVotacao",
+                nome: "abrirvotacao",
                 descricao: "Abre uma votacao de sim ou nao",
-                exemplo: "!abrirVotacao"
+                exemplo: "!abrirvotacao"
             },
             {
                 nome: "votarSim",
@@ -36,8 +36,8 @@ module.exports.run = async (client, message, args) => {
 
 function createMessageReturn(info) {
     let message = info.titulo + "\n"
-    info.comandos.forEach(comando => {
-        let linhaComando = `Comando 1: ${comando.nome} \n   Descricao: ${comando.descricao} \n  Exemplo: ${comando.exemplo} \n ------------------------------------------------ \n`
+    info.comandos.forEach((comando, index) => {
+        let linhaComando = `*Comando ${index + 1}* : \n     Nome: ${comando.nome} \n     Descricao: ${comando.descricao} \n    Exemplo: ${comando.exemplo} \n ------------------------------------------------ \n`
         message = message.concat(linhaComando)
     }) 
     return message;

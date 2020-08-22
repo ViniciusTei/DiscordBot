@@ -4,6 +4,8 @@ const config = require('./config.json');
 
 const client = new Discord.Client();
 
+let votacao = null;
+
 //bot ready
 client.once('ready', async () => {
     console.log('Ready!');
@@ -23,6 +25,7 @@ fs.readdir('./src/commands/', (err, files) => {
 
         const event = require(`./src/commands/${file}`)
         client.commands.set(event.help.name, event)
+        //console.log(client.commands)
     })
 });
 
@@ -35,6 +38,7 @@ client.on('message', message => {
     let command = messageArray[0].toLowerCase();
     let args = messageArray.slice(1);
 
+    console.log(command.slice(config.prefix.length))
     let cmd = client.commands.get(command.slice(config.prefix.length))
     if (cmd) cmd.run(client, message, args);
 
