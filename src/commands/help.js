@@ -1,6 +1,6 @@
 module.exports.run = async (client, message, args) => {
-    let message = {
-        titulo: "Lista de comandos",
+    let response = {
+        titulo: "********** Lista de comandos **********",
         comandos: [
             {
                 nome: "mix",
@@ -29,7 +29,18 @@ module.exports.run = async (client, message, args) => {
             }
         ]
     }
-    return message.channel.send(JSON.stringify(message))
+
+    
+    return message.channel.send(createMessageReturn(response))
+}
+
+function createMessageReturn(info) {
+    let message = info.titulo + "\n"
+    info.comandos.forEach(comando => {
+        let linhaComando = `Comando 1: ${comando.nome} \n   Descricao: ${comando.descricao} \n  Exemplo: ${comando.exemplo} \n ------------------------------------------------ \n`
+        message = message.concat(linhaComando)
+    }) 
+    return message;
 }
 
 module.exports.help = {
