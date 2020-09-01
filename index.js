@@ -4,8 +4,6 @@ const config = require('./config.json');
 
 const client = new Discord.Client();
 
-let votacao = null;
-
 //bot ready
 client.once('ready', async () => {
     console.log('Ready!');
@@ -38,7 +36,6 @@ client.on('message', message => {
     let command = messageArray[0].toLowerCase();
     let args = messageArray.slice(1);
 
-    console.log(command.slice(config.prefix.length))
     let cmd = client.commands.get(command.slice(config.prefix.length))
     if (cmd) cmd.run(client, message, args);
 
