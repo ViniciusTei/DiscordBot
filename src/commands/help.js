@@ -9,24 +9,9 @@ module.exports.run = async (client, message, args) => {
             },
             {
                 nome: "abrirvotacao",
-                descricao: "Abre uma votacao de sim ou nao",
-                exemplo: "!abrirvotacao"
+                descricao: "Abre uma votacao de sim ou nao, deve ser passado um numero que representa a quantidade de votos a ser computada.",
+                exemplo: "!abrirvotacao #n"
             },
-            {
-                nome: "votarSim",
-                descricao: "Vota sim em uma votacao",
-                exemplo: "!votarSim"
-            },
-            {
-                nome: "votarNao",
-                descricao: "Vota nao em uma votacao",
-                exemplo: "!votarNao"
-            },
-            {
-                nome: "mostrarResultado",
-                descricao: "Mostra os resultados de uma votacao, funciona apenas se existir uma votacao aberta",
-                exemplo: "!mostrarResultado"
-            }
         ]
     }
 
