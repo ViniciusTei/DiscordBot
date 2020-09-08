@@ -1,27 +1,48 @@
 const ytdl = require('ytdl-core');
+const puppeteer = require('puppeteer');
 
 module.exports.run = async (client, message, args) => {
-    if (message.content === '!musica') {
-		if (message.channel.type === 'dm') return;
+	const voiceChannel = message.member.voice.channel;
 
-		const voiceChannel = message.member.voice.channel;
-
-		if (!voiceChannel) {
-			return message.reply('please join a voice channel first!');
-		}
-
-		voiceChannel.join().then(async connection => {
-			const stream = ytdl('https://www.youtube.com/watch?v=Q0oIoR9mLwc', { filter: 'audioonly' });
-		
-			const dispatcher = connection.play(stream);
-			
-			tocandoMusica(message, dispatcher)
-		})
+	if (!voiceChannel) {
+		return message.reply('please join a voice channel first!');
 	}
+
+	voiceChannel.join().then(async connection => {
+		scrap(args[0]).then((valores) => {
+			const stream = ytdl(valores[0].url, { filter: 'audioonly' });
+	
+			const dispatcher = connection.play(stream);
+		
+			tocandoMusica(message, dispatcher, valores[0])
+		})
+		
+	})
 }
 
-async function tocandoMusica(message, dispatcher) {
-	await message.channel.send('Comandos para musica: !play !pause !stop').then((msg) => {
+/**
+ * Essa funcao usa o pupteer para pesquisar videos no youtube e retornar o titulo e a url
+ *  
+ */
+async function scrap(searchParam) {
+	const browser = await puppeteer.launch();
+	const page = await browser.newPage();
+  
+	await page.goto('https://www.youtube.com/results?search_query=' + searchParam);
+	const result = await page.evaluate(() => {
+		let elements = []
+		document.querySelectorAll('#video-title').forEach(el => {
+		  elements.push({title: el.getAttribute('title'), url: `https://www.youtube.com` + el.getAttribute('href')})
+		  console.log(el)
+		})
+		return elements
+	})
+	await browser.close();
+	return result
+  }
+
+async function tocandoMusica(message, dispatcher, musica) {
+	await message.channel.send(`Tocando musica: ${musica.title}\nComandos para musica: !play !pause !stop`).then((msg) => {
 		message.channel.awaitMessages(musicArgutmets(msg), {max: 1, time: 100000, errors: ['time']})
 			.then(collected => {
 				collected.forEach(element => {
