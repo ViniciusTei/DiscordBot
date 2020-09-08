@@ -11,7 +11,11 @@
   "author": "viniciustei",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.2.0"
+    "@discordjs/opus": "^0.3.2",
+    "discord.js": "^12.2.0",
+    "ffmpeg-static": "^4.2.7",
+    "puppeteer": "^5.2.1",
+    "ytdl-core": "^3.2.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
