@@ -9,7 +9,12 @@ module.exports.run = async (client, message, args) => {
 	}
 
 	voiceChannel.join().then(async connection => {
-		scrap(args[0]).then((valores) => {
+		let argstring = ''
+		args.forEach(arg => {
+			argstring += ' '
+			argstring += arg
+		})
+		scrap(argstring).then((valores) => {
 			const stream = ytdl(valores[0].url, { filter: 'audioonly' });
 	
 			const dispatcher = connection.play(stream);
