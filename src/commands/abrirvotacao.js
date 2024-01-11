@@ -1,23 +1,31 @@
 module.exports.run = async (client, message, args) => {
-    if(args.length == 0) return message.channel.send('Digite um numero de votos!')
-    let votes = {
-        sim: 0,
-        nao: 0
-    }
+    if(args.length < 3) return message.channel.send('Digite um título e as opções desejadas separadas por vírgula! Exemplo: !abrivotacao TITULO, OPCAO1, OPCAO2')
+    const title = args[0]
+    const options = args.slice(1)
+
+    const optionsVotes = {}
+    options.forEach(opt => {
+        optionsVotes[opt] = 0
+    })
+
     await message.channel.send('Votacao aberta').then(() => {
         message.channel.awaitMessages(() => true, { max: args, time: 30000, errors: ['time'] })
             .then(collected => {
                 collected.forEach(el => {
-                    if(el.content == '!sim') {
-                        votes.sim++
-                    } else if (el.content == '!nao') {
-                        votes.nao++
+                    if (options.includes(el.content)) {
+                        optionsVotes[el.content] += 1
                     }
                 })
-                message.channel.send(`Resuldado: \n Sim: ${votes.sim} \n Nao: ${votes.nao}`)
+                let restulMessage = `${title}: \n`
+
+                for (const opt in options) {
+                    let optMessage = `${opt}: ${optionsVotes[opt]} \n`
+                    restulMessage += optMessage
+                }
+                message.channel.send(restulMessage)
             })
             .catch(collected => {
-                message.channel.send('Nao houveram votos o suficiente!');
+                message.channel.send('Não houveram votos o suficiente!');
             });
     })
 }
