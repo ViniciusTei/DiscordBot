@@ -4,14 +4,19 @@ module.exports.run = async (client, message, args) => {
         comandos: [
             {
                 nome: "mix",
-                descricao: "Cria dois times de 5 pessoas randomicamente",
+                descricao: "Cria dois times de 5 pessoas. Os times são escolhidos aleatóriamente.",
                 exemplo: "!mix nome1 nome2 nome3 nome4 nome5 nome6 nome7 nome8 nome9 nome10"
             },
             {
                 nome: "abrirvotacao",
-                descricao: "Abre uma votacao de sim ou nao, deve ser passado um numero que representa a quantidade de votos a ser computada.",
-                exemplo: "!abrirvotacao #n"
+                descricao: "Abre uma votação entre duas ou mais opções. Deve ser passado um título e as opções separadas por vírgula.",
+                exemplo: "!abrirvotacao TITULO, OPÇAO1, OPÇAO2..."
             },
+            {
+                nome: "help",
+                descricao: "Mostra a lista de comandos existentes",
+                exemplo: "!help"
+            }
         ]
     }
 
