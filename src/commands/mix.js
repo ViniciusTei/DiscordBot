@@ -1,14 +1,13 @@
-const Discord = require('discord.js');
+import { SlashCommandBuilder } from "discord.js"
 
-module.exports.run = async (client, message, args) => {
+const help = {
+  data: new SlashCommandBuilder().setName('mix').setDescription('Cria um time de mix aleatóriamente.'),
+  execute: async (interaction) => {
     if(args.length != 10 && args.length != 1)
-        return message.channel.send(`Numero de jogadores invalido, digite 10 nomes ou o numero de uma lista`)
+      return await interaction.reply(`Numero de jogadores invalido, digite 10 nomes ou o numero de uma lista`)
 
-        return message.channel.send(createTeams(args))
-}
-
-module.exports.help = {
-    name: 'mix'
+    return await interaction.reply(createTeams(args))
+  }
 }
 
 function createTeams(args) {
@@ -47,4 +46,7 @@ function shuffle(array) {
     }
   
     return array;
-  }
+}
+
+export default help
+

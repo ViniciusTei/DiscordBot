@@ -1,5 +1,18 @@
-module.exports.run = async (client, message, args) => {
-    let response = {
+import { SlashCommandBuilder } from 'discord.js'
+
+function createMessageReturn(info) {
+    let message = info.titulo + "\n"
+    info.comandos.forEach((comando, index) => {
+        let linhaComando = `*Comando ${index + 1}* : \n     Nome: ${comando.nome} \n     Descricao: ${comando.descricao} \n    Exemplo: ${comando.exemplo} \n ------------------------------------------------ \n`
+        message = message.concat(linhaComando)
+    }) 
+    return message;
+}
+
+const help = {
+  data: new SlashCommandBuilder().setName('help').setDescription('Mostra uma lista com os comandos existentes e como usa-los'),
+  execute: async (interaction) => {
+    let command = {
         titulo: "*** Lista de comandos ***",
         comandos: [
             {
@@ -20,19 +33,11 @@ module.exports.run = async (client, message, args) => {
         ]
     }
 
-    
-    return message.channel.send(createMessageReturn(response))
+    await interaction.reply({
+      content: createMessageReturn(command),
+      ephemeral: true // essa opcao faz a mensagem a aparecer apenas para quem digitou o comando
+    })
+  }
 }
 
-function createMessageReturn(info) {
-    let message = info.titulo + "\n"
-    info.comandos.forEach((comando, index) => {
-        let linhaComando = `*Comando ${index + 1}* : \n     Nome: ${comando.nome} \n     Descricao: ${comando.descricao} \n    Exemplo: ${comando.exemplo} \n ------------------------------------------------ \n`
-        message = message.concat(linhaComando)
-    }) 
-    return message;
-}
-
-module.exports.help = {
-    name: 'help'
-}
+export default help
