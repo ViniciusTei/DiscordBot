@@ -2,22 +2,21 @@
   "name": "martecs",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "commands": "node src/deploy-commands.js"
   },
   "author": "viniciustei",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/opus": "^0.3.2",
-    "discord.js": "^12.2.0",
-    "ffmpeg-static": "^4.2.7",
-    "puppeteer": "^5.2.1",
-    "ytdl-core": "^3.2.2"
+    "discord.js": "14.14.1"
   },
   "devDependencies": {
+    "eslint": "^8.56.0",
     "nodemon": "^2.0.4"
   }
 }
