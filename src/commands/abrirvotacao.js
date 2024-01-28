@@ -1,4 +1,30 @@
-import { SlashCommandBuilder } from 'discord.js'
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ComponentType,
+  SlashCommandBuilder
+} from 'discord.js'
+import { filledBar } from 'string-progressbar'
+
+const PROGRESS_BAR_SIZE = 20
+const PROGRESS_BAR_TOTAL_VALUE = 100
+
+function createVoteMessage(votes) {
+  let message = '\n>>> '
+  const options = Object.keys(votes)
+  const totalVotes = options.reduce((acc, key) => {
+    return acc + votes[key]
+  }, 0)
+  options.forEach(opt => {
+    const currentValue = votes[opt] > 0
+      ? Math.floor(votes[opt] * PROGRESS_BAR_TOTAL_VALUE / totalVotes)
+      : 0
+    const [bar] = filledBar(PROGRESS_BAR_TOTAL_VALUE, currentValue, PROGRESS_BAR_SIZE)
+    message += `${opt.toUpperCase()}: ${bar} (${votes[opt]})\n`
+  })
+  return message
+}
 
 export default {
   data: new SlashCommandBuilder()
@@ -15,38 +41,42 @@ export default {
   ,
   execute: async (interaction) => {
     const title = interaction.options.getString('titulo')
-    const options = interaction.options.getString('opcoes') 
-    if(!title || !options) return await interaction.reply('Votação inválida')
+    const options = interaction.options.getString('opcoes').split(',').map(s => s.trim())
+    if (!title || !options) return await interaction.reply('Votação inválida')
 
     const optionsVotes = {}
+    const buttons = []
     options.forEach(opt => {
-        optionsVotes[opt] = 0
+      optionsVotes[opt] = 0
+      buttons.push(new ButtonBuilder()
+        .setCustomId(opt)
+        .setLabel(`Votar em ${opt}`)
+        .setStyle(ButtonStyle.Primary))
     })
 
-    await interaction.reply('Votação aberta')
-    const collected = interaction.fetchReply()
-    console.log('collected from chat', collected)
+    const row = new ActionRowBuilder()
+      .addComponents(buttons)
 
-    // await message.channel.send('Votacao aberta').then(() => {
-    //     message.channel.awaitMessages(() => true, { max: args, time: 30000, errors: ['time'] })
-    //         .then(collected => {
-    //             collected.forEach(el => {
-    //                 if (options.includes(el.content)) {
-    //                     optionsVotes[el.content] += 1
-    //                 }
-    //             })
-    //             let restulMessage = `${title}: \n`
-    //
-    //             for (const opt in options) {
-    //                 let optMessage = `${opt}: ${optionsVotes[opt]} \n`
-    //                 restulMessage += optMessage
-    //             }
-    //             message.channel.send(restulMessage)
-    //         })
-    //         .catch(collected => {
-    //             message.channel.send('Não houveram votos o suficiente!');
-    //         });
-    // })
+    const collected = await interaction.reply({
+      content: `# Vote ${title}! ${createVoteMessage(optionsVotes)}`,
+      components: [row]
+    })
+
+    try {
+      const collector = collected.createMessageComponentCollector({ componentType: ComponentType.Button, time: 60_000 })
+
+      collector.on('collect', async i => {
+        optionsVotes[i.customId] += 1
+        i.update({
+          content: `# Vote ${title}! ${createVoteMessage(optionsVotes)}`,
+          components: [row]
+        })
+      })
+
+    } catch (error) {
+      //end 
+      console.log('Fim')
+    }
   },
 }
 

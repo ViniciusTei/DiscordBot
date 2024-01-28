@@ -1,6 +1,4 @@
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
-import fs from 'node:fs'
-import path from 'node:path'
 
 import config from '../config.json' assert { type: 'json' }
 import handlers from './utils/handlers.js'
@@ -22,11 +20,11 @@ for (const command of commands) {
 //load events
 const events = await handlers.eventsHandler()
 for (const event of events) {
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
-	}
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args));
+  }
 }
 
 client.login(process.env.BOT_TOKEN || config.token);

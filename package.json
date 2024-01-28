@@ -13,7 +13,8 @@
   "author": "viniciustei",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "14.14.1"
+    "discord.js": "14.14.1",
+    "string-progressbar": "^1.0.4"
   },
   "devDependencies": {
     "eslint": "^8.56.0",
